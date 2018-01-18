@@ -16,7 +16,7 @@
 		E42CEEDE1FF95E7B005E012F /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42CEEDD1FF95E7B005E012F /* SetCard.swift */; };
 		E42CEEE01FF962E5005E012F /* SetCardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42CEEDF1FF962E5005E012F /* SetCardDeck.swift */; };
 		E42CEEE21FF96E48005E012F /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42CEEE11FF96E48005E012F /* SetGame.swift */; };
-		E42CEEE61FF97D38005E012F /* SetCardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42CEEE51FF97D38005E012F /* SetCardButton.swift */; };
+		E49BBDC520110A2100C2C4CA /* SetCardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49BBDC420110A2100C2C4CA /* SetCardButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +31,7 @@
 		E42CEEDD1FF95E7B005E012F /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
 		E42CEEDF1FF962E5005E012F /* SetCardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardDeck.swift; sourceTree = "<group>"; };
 		E42CEEE11FF96E48005E012F /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
-		E42CEEE51FF97D38005E012F /* SetCardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardButton.swift; sourceTree = "<group>"; };
+		E49BBDC420110A2100C2C4CA /* SetCardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +96,7 @@
 		E4F983102000036200CF2E67 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E42CEEE51FF97D38005E012F /* SetCardButton.swift */,
+				E49BBDC420110A2100C2C4CA /* SetCardButton.swift */,
 				E42CEEDB1FF94DF0005E012F /* BorderButton.swift */,
 				E42CEEC91FF8FE29005E012F /* ViewController.swift */,
 			);
@@ -175,12 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E49BBDC520110A2100C2C4CA /* SetCardButton.swift in Sources */,
 				E42CEEE01FF962E5005E012F /* SetCardDeck.swift in Sources */,
 				E42CEECA1FF8FE29005E012F /* ViewController.swift in Sources */,
 				E42CEEC81FF8FE29005E012F /* AppDelegate.swift in Sources */,
 				E42CEEDE1FF95E7B005E012F /* SetCard.swift in Sources */,
 				E42CEEE21FF96E48005E012F /* SetGame.swift in Sources */,
-				E42CEEE61FF97D38005E012F /* SetCardButton.swift in Sources */,
 				E42CEEDC1FF94DF0005E012F /* BorderButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

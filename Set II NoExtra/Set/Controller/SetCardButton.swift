@@ -15,36 +15,29 @@ import UIKit
     var strokeWidths:[CGFloat] = [ -8, 8, -8]
     var symbols = ["●", "▲", "■"]
     
-    var setCard: SetCard? { didSet{updateButton()}}
+    var setCard: SetCard? = SetCard(number: SetCard.Variant.v3,
+                                   color: SetCard.Variant.v3,
+                                   shape: SetCard.Variant.v3,
+                                   fill: SetCard.Variant.v3) { didSet{updateButton()}}
+    
+    private func setAttributedString(card: SetCard) -> NSAttributedString{
+        //-------- symbols: number & shape -------
+        let symbol = symbols [card.shape.idx]
+        let separator = verticalSizeClass == .regular ? "\n" : " "
+        let symbolsString = symbol.join(n: card.number.rawValue, with: separator)
+        //------ attributes: color & fill-------
+        let attributes:[NSAttributedStringKey : Any] = [
+            .strokeColor: colors[card.color.idx],
+            .strokeWidth: strokeWidths[card.fill.idx],
+            .foregroundColor: colors[card.color.idx].withAlphaComponent(alphas[card.fill.idx])
+        ]
+        return NSAttributedString(string: symbolsString, attributes: attributes)
+    }
     
     private func updateButton () {
         if let card = setCard {
-            //-------- number & shape -------
-            let symbol = symbols [card.shape.idx]
-            switch verticalSizeClass {
-            case .regular:
-                switch card.number {
-                case .v1: symbolsString = "\(symbol)"
-                case .v2: symbolsString = "\(symbol)\n\(symbol)"
-                case .v3: symbolsString = "\(symbol)\n\(symbol)\n\(symbol)"
-                }
-            case .compact:
-                switch card.number {
-                case .v1: symbolsString = "\(symbol)"
-                case .v2: symbolsString = "\(symbol)\(symbol)"
-                case .v3: symbolsString = "\(symbol)\(symbol)\(symbol)"
-                }
-            case .unspecified: break
-            }
-            //------ attributes: color & fill-------
-            attributes = [
-                .strokeColor: colors[card.color.idx],
-                .strokeWidth: strokeWidths[card.fill.idx],
-                .foregroundColor: colors[card.color.idx].withAlphaComponent(alphas[card.fill.idx])
-            ]
-            let attrString = NSAttributedString(string: symbolsString, attributes: attributes)
-            //---------------------------------------
-            setAttributedTitle(attrString, for: .normal)
+            let attributedString  = setAttributedString(card: card)
+            setAttributedTitle(attributedString, for: .normal)
             backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             isEnabled = true
         } else {
@@ -55,14 +48,13 @@ import UIKit
             isEnabled = false
         }
     }
+    var verticalSizeClass: UIUserInterfaceSizeClass {return
+        UIScreen.main.traitCollection.verticalSizeClass}
     
     func setBorderColor (color: UIColor) {
         borderColor =  color
         borderWidth = Constants.borderWidth
     }
-    
-    private var symbolsString = ""
-    private var attributes = [NSAttributedStringKey : Any]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,19 +66,9 @@ import UIKit
         configure()
     }
     
-    var verticalSizeClass: UIUserInterfaceSizeClass =
-                                        UIScreen.main.traitCollection.verticalSizeClass
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if let vsc = previousTraitCollection?.verticalSizeClass {
-            switch  vsc {
-            case .regular: verticalSizeClass = .compact
-                           updateButton()
-            case .compact: verticalSizeClass = .regular
-                           updateButton()
-            case .unspecified: break
-            }
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateButton()
     }
     
     private func configure () {
@@ -101,5 +83,16 @@ import UIKit
         static let cornerRadius: CGFloat = 8.0
         static let borderWidth: CGFloat = 5.0
         static let borderColor: UIColor   = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    }
+}
+
+extension String {
+    func join(n: Int, with separator:String )-> String{
+        guard n > 1 else {return self}
+        var symbols = [String] ()
+        for _ in 0..<n {
+            symbols += [self]
+        }
+        return symbols.joined(separator: separator)
     }
 }

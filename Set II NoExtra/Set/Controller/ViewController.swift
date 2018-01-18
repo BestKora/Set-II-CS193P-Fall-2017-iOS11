@@ -11,12 +11,23 @@ import UIKit
 class ViewController: UIViewController {
     
     private var game = SetGame()
+    var colors = [#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.5808190107, green: 0.0884276256, blue: 0.3186392188, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1)]
+    var strokeWidths:[CGFloat] = [ -10, 10, -10]
+    var alphas:[CGFloat] = [1.0, 0.60, 0.15]
     
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var deckCountLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
-    @IBOutlet var cardButtons: [SetCardButton]!
+    @IBOutlet var cardButtons: [SetCardButton]! {
+        didSet {
+            for button in cardButtons{
+                button.strokeWidths = strokeWidths
+                button.colors = colors
+                button.alphas = alphas
+        }
+    }
+    }
     
     @IBOutlet weak var dealButton: BorderButton!
     @IBOutlet weak var newButton: BorderButton!
