@@ -16,9 +16,10 @@ import UIKit
     var symbols = ["●", "▲", "■"]
     
     var setCard: SetCard? = SetCard(number: SetCard.Variant.v3,
-                                   color: SetCard.Variant.v3,
-                                   shape: SetCard.Variant.v3,
-                                   fill: SetCard.Variant.v3) { didSet{updateButton()}}
+                                    color: SetCard.Variant.v3,
+                                    shape: SetCard.Variant.v3,
+                                    fill: SetCard.Variant.v3)
+        { didSet{updateButton()}}
     
     private func setAttributedString(card: SetCard) -> NSAttributedString{
         //-------- symbols: number & shape -------
@@ -48,7 +49,8 @@ import UIKit
             isEnabled = false
         }
     }
-    var verticalSizeClass: UIUserInterfaceSizeClass {return
+    
+    private var verticalSizeClass: UIUserInterfaceSizeClass {return
         UIScreen.main.traitCollection.verticalSizeClass}
     
     func setBorderColor (color: UIColor) {
@@ -96,3 +98,4 @@ extension String {
         return symbols.joined(separator: separator)
     }
 }
+
