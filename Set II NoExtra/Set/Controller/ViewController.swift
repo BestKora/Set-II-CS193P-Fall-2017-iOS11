@@ -20,6 +20,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var deckCountLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     
+     @IBOutlet weak var iPhoneLabel: UILabel!
+    
     @IBOutlet var cardButtons: [SetCardButton]! {
         didSet {
                for button in cardButtons{
@@ -93,7 +95,7 @@ class ViewController: UIViewController {
         }
     }
     
-    private var timer: Timer?
+    private weak var timer: Timer?
     private var _lastHint = 0
     
     @IBAction func hint() {

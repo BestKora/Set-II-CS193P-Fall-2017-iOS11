@@ -64,7 +64,8 @@ struct SetGame {
     }
     
     private mutating func replaceOrRemove3Cards(){
-        if let take3Cards =  take3FromDeck() {
+    //    if let take3Cards =  take3FromDeck() { // less complicated game
+        if cardsOnTable.count == Constants.startNumberCards, let take3Cards =  take3FromDeck() {
             cardsOnTable.replace(elements: cardsTryMatched, with: take3Cards)
         } else {
              cardsOnTable.remove(elements: cardsTryMatched)
@@ -104,6 +105,12 @@ struct SetGame {
                     }
                 }
             }
+        }
+        if let itIsSet = isSet,itIsSet {
+            let matchIndices = cardsOnTable.indices(of: cardsTryMatched)
+            return hints.map{ Set($0)}
+                .filter{$0.intersection(Set(matchIndices)).isEmpty}
+                .map{Array($0)}
         }
         return hints
     }
@@ -152,6 +159,12 @@ extension Array where Element : Equatable {
                 self [indexMatched ] = new[idx]
             }
         }
+    }
+    
+    func indices(of elements: [Element]) ->[Int]{
+        guard self.count >= elements.count, elements.count > 0 else {return []}
+        /// Ищем индексы элементов elements у себя - self
+        return elements.map{self.index(of: $0)}.flatMap{$0}
     }
 }
 
