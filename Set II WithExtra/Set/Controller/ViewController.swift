@@ -9,26 +9,29 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
     enum Player:Int {
         case me = 1
         case iPhone
     }
     
-    private var game = SetGame()
-    var currentPayer = Player.me {
+    private var currentPLayer = Player.me {
         didSet {
-            game.playerIndex = currentPayer.rawValue - 1
+            game.playerIndex = currentPLayer.rawValue - 1
         }
     }
+    
+    private var game = SetGame()
     
     var colors = [#colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.5808190107, green: 0.0884276256, blue: 0.3186392188, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1)]
     var strokeWidths:[CGFloat] = [ -10, 10, -10]
     var alphas:[CGFloat] = [1.0, 0.60, 0.15]
     
-    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var deckCountLabel: UILabel!
+    /// ------ ME --------
+    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    
+    /// ------ IPHONE  --------
     @IBOutlet weak var iPhoneLabel: UILabel!
     @IBOutlet weak var messageIPhoneLabel: UILabel!
     @IBOutlet weak var scoreiPhoneLabel: UILabel!
@@ -49,7 +52,7 @@ class ViewController: UIViewController {
     
     @IBAction func touchCard(_ sender: SetCardButton) {
         timer1?.invalidate()
-        currentPayer = .me
+        currentPLayer = .me
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -63,7 +66,7 @@ class ViewController: UIViewController {
         updateButtonsFromModel()
         updateHintButton()
         deckCountLabel.text = "Deck: \(game.deckCount )"
-        switch currentPayer {
+        switch currentPLayer {
         case .me:
            scoreLabel.text = "Score: \(game.score[0]) / \(game.numberSets[0])"
         case .iPhone:
@@ -99,7 +102,7 @@ class ViewController: UIViewController {
                         button.setBorderColor(color:
                             itIsSet ? Colors.matched: Colors.misMatched)
                     }
-                    switch currentPayer {
+                    switch currentPLayer {
                     case .me:
                             messageLabel.text = itIsSet ? "СОВПАДЕНИЕ" :"НЕСОВПАДЕНИЕ"
                     case .iPhone:
@@ -151,7 +154,7 @@ class ViewController: UIViewController {
         timer?.invalidate()
         timer1?.invalidate()
         game = SetGame()
-        currentPayer = Player.me
+        currentPLayer = Player.me
         cardButtons.forEach { $0.setCard = nil }
         updateViewFromModel()
     }
@@ -211,7 +214,7 @@ class ViewController: UIViewController {
             timer1 = Timer.scheduledTimer(withTimeInterval: Constants.iPhoneWaitTime,
                             repeats: false) {[weak self] time in
                 
-                self?.currentPayer = .iPhone
+                self?.currentPLayer = .iPhone
                 self?.iPhoneLabel.text = "  😄  "
                 self?.iPhoneLabel.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
                 
