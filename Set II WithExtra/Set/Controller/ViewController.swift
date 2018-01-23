@@ -56,7 +56,9 @@ class ViewController: UIViewController {
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
-            TryiPhone()
+            if let itIsSet = game.isSet, itIsSet {
+                TryiPhone()
+            }
         } else {
             print("choosen card was not in cardButtons")
         }
@@ -66,11 +68,12 @@ class ViewController: UIViewController {
         updateButtonsFromModel()
         updateHintButton()
         deckCountLabel.text = "Deck: \(game.deckCount )"
-        switch currentPLayer {
-        case .me:
-           scoreLabel.text = "Score: \(game.score[0]) / \(game.numberSets[0])"
-        case .iPhone:
-            scoreiPhoneLabel.text = "Score: \(game.score[1]) / \(game.numberSets[1])"
+        
+        scoreLabel.text = "Score: \(game.score[0]) / \(game.numberSets[0])"
+        scoreiPhoneLabel.text = "Score: \(game.score[1]) / \(game.numberSets[1])"
+        if currentPLayer != .iPhone {
+           iPhoneLabel.text = "  🤔  "
+           iPhoneLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
         }
         
         dealButton.disable = (game.cardsOnTable.count) >= cardButtons.count
@@ -118,6 +121,7 @@ class ViewController: UIViewController {
    
     @IBAction func deal3() {
         if (game.cardsOnTable.count + 3) <= cardButtons.count {
+            currentPLayer = .me
             game.deal3()
             updateViewFromModel()
             timer1?.invalidate()
@@ -169,7 +173,7 @@ class ViewController: UIViewController {
    //     MARK:   Actions for iPhone
     
     private func neutralizationSet (){
-        //--- нейтрализуем Set
+        //--- neutralize Set from .me
         var cardsOnTable = game.cardsOnTable
         cardsOnTable.remove(elements: game.cardsTryMatched)
             let randomCard = cardsOnTable [cardsOnTable.count.arc4random]
@@ -178,7 +182,7 @@ class ViewController: UIViewController {
             }
     }
     private func removeSelectedCards (){
-         // убираем selected
+         // remove selected cards
        game.cardsSelected.forEach { card in
             if let idx = game.cardsOnTable.index(of: card){
                 game.chooseCard(at: idx)
@@ -196,7 +200,6 @@ class ViewController: UIViewController {
     }
     
     private func selectRandomSet(){
-        print ("------------------fail random Set")
         var cardsOnTable = game.cardsOnTable
         cardsOnTable.shuffle()
             for index in 0..<3 {
@@ -208,41 +211,33 @@ class ViewController: UIViewController {
     
     private func TryiPhone(){
         //-----------TryiPhone----------------------
-        iPhoneLabel.text = "  🤔  "
-        iPhoneLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        if let itIsSet = game.isSet, itIsSet {
-            timer1 = Timer.scheduledTimer(withTimeInterval: Constants.iPhoneWaitTime,
-                            repeats: false) {[weak self] time in
-                
+        timer1 = Timer.scheduledTimer(withTimeInterval:
+            Constants.iPhoneWaitTime, repeats: false) {[weak self] time in
+                                        
                 self?.currentPLayer = .iPhone
                 self?.iPhoneLabel.text = "  😄  "
                 self?.iPhoneLabel.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
                 
-                //--- нейтрализуем Set
+        //--- neutralize Set from .me
                 self?.neutralizationSet ()
                 
-                // убираем selected
+        // remove selected cards
                 self?.removeSelectedCards ()
                 
-                // бросаем монетку на удачу
+        // flip a coin with probability 2/3
                 if  Int.randomNumber(probabilities: [1, 2]) == 1 {
-                    // success hint Set
+        // success hint Set
                     self?.selectHintSet ()
-                    
-                } else {  // fail random Set
+                } else {
+        // fail random Set
                     self?.selectRandomSet()
                 }
                 self?.updateViewFromModel()
                 if let itIsSet = self?.game.isSet {
-                    if itIsSet  {
-                    self?.iPhoneLabel.text = "  😂!!!"
+                    self?.iPhoneLabel.text = itIsSet ? "  😂!!!" : "  😥..."
                 } else {
-                    self?.iPhoneLabel.text = "  😥..."
+                    self?.iPhoneLabel.text = "🤢 No Sets at all."
                 }
-                } else {
-                     self?.iPhoneLabel.text = "🤢 No Sets at all."
-                                }
-            }
         }
     }
 }

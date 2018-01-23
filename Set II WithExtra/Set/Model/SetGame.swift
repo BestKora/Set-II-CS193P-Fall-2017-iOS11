@@ -9,10 +9,11 @@
 import Foundation
 struct SetGame {
     
-/*    private(set) var flipCount = 0
-    private(set) var score = 0
-    private(set) var numberSets = 0
- */
+    var playerIndex = 0
+    
+    private(set) var flipCount = [0,0]
+    private(set) var score = [0,0]
+    private(set) var numberSets = [0,0]
     
     private(set) var cardsOnTable = [SetCard]()
     private(set) var cardsSelected = [SetCard]()
@@ -22,10 +23,7 @@ struct SetGame {
     private var deck = SetCardDeck()
     var deckCount: Int {return deck.cards.count}
     
-    var playerIndex = 0
-    private(set) var flipCount = [0,0]
-    private(set) var score = [0,0]
-    private(set) var numberSets = [0,0]
+   
     
     var isSet: Bool? {
         get {
@@ -51,7 +49,6 @@ struct SetGame {
    mutating func chooseCard(at index: Int) {
         assert(cardsOnTable.indices.contains(index),
                "SetGame.chooseCard(at: \(index)) : Choosen index out of range")
-    
         let cardChoosen = cardsOnTable[index]
         if !cardsRemoved.contains(cardChoosen) && !cardsTryMatched.contains(cardChoosen){
             if  isSet != nil{
